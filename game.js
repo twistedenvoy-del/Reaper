@@ -17,13 +17,16 @@ let visitedBasement = false;
 let foundCombination1 = false;
 let foundCombination2 = false;
 let foundJournalPages = false;
+let foundNote = false;
 let safeUnlocked = false;
+let jackEncounterChance = 0.1;
 
 // ==================
 // FEAR SYSTEM
 // ==================
 function increaseFear() {
   fear += 15;
+  updateEncounterChance();
 }
 
 // ==================
@@ -33,6 +36,7 @@ function loseSanity() {
   if (sanity > 0) {
     sanity -= 10;
   }
+  updateEncounterChance();
 }
 
 function checkSanity() {
@@ -102,6 +106,40 @@ function createGhost(name, threatLevel) {
   };
 }
 
+// ==================
+// ENCOUNTER SYSTEM
+// ==================
+function chanceCheck(chance) {
+  return Math.random() < chance;
+}
+
+function updateEncounterChance() {
+  let sanityCon = (100 - sanity) / 100;
+  let fearCon = fearLevel / 100;
+  jackEncounterChance = (sanityCon + fearCon) / 2;
+}
+
+function checkForEncounter() {
+  let encountered = chanceCheck(jackEncounterChance);
+  if (encountered === true) {
+    sightGhost();
+    investigateRoom();
+    showMessage("The air grows heavy...something is here");
+  } else {
+    return null;
+  }
+}
+function getTier (){
+if (sanity > 60 && fearLevel <40) {
+return 1
+}
+else if (sanity< 30 || fearLevel > 70){
+return 3
+}
+else {
+return 2
+}
+}
 // ==================
 // INVENTORY SYSTEM
 // ==================
@@ -310,6 +348,7 @@ function handleBasement() {
 // ==================
 function examineOffice() {
   showMessage("When you look closer at the papers on the floor, there are frantic writings, few words can be made out, 'hunts' is one of the recurring ones you could read. They also have this odd symbol you don't recognize at all.");
+  checkForEncounter();
   updateDisplay();
 }
 
@@ -320,11 +359,13 @@ function examineDesk() {
     showMessage("When you look at the computer you can see a bunch of pages open. The one on screen speaks of bringing evil home with you. As you go through the other pages you notice they're all relating to supernatural myths and legends. As you look closer at the desk you notice a large safe underneath it. You try to open it but it doesn't budge, it takes a passcode. Most people have them memorized, but they also have them wrote down somewhere. Maybe there's something in there that can help locate Ronald and James. You should keep an eye out for the combination.");
     attemptSafe();
   }
+  checkForEncounter();
   updateDisplay();
 }
 
 function examineBayWindow() {
   showMessage("As you walk over to the bay window you can see an oil spot, as if someone placed their forehead against the pane of glass in defeat. Outside the window you can see the lake, what is beautiful in the day, holds an eerie stillness in the pale moonlight. As you peer out the window something dark flashes in the corner of your vision. Causing you to jump slightly. But then there was nothing...maybe it was your imagination.");
+  checkForEncounter();
   updateDisplay();
 }
 
@@ -340,16 +381,25 @@ function backToLobby() {
 function searchDresser() {
   showMessage("Inside the top drawer you find multiple religious books. From all different walks of life, curious as to why he has so many and of different faiths. The second drawer holds a journal, but the pages are all torn out of it in a frantic fashion. One piece of paper catches your eye, it has a number still attached to the journal. '31'");
   foundCombination1 = true;
+  checkForEncounter();
   updateDisplay();
 }
 
 function examineBed() {
-  showMessage("The bed is massive, it could fit four well built adults with room to spare. On the floor there is a scuff mark. You look closely at the scuff mark. The bed had been moved forcefully.");
+  if (safeUnlocked === true) {
+    showMessage("You put it together, the journal even tattered you figured out that the bed wasn't moved because someone was drug away but because some one was hiding something. You examine the scuff marks closely and notice something wrapped something attached to the back of the leg of the bed. You reach out and grab it, it's a piece of paper, a plan to fight the entity.");
+    pickUpItem("Ronald's note");
+    foundNote = true;
+  } else {
+    showMessage("The bed is massive, it could fit four well built adults with room to spare. On the floor there is a scuff mark. You look closely at the scuff mark. The bed had been moved forcefully.");
+    checkForEncounter();
+  }
   updateDisplay();
 }
 
 function examineLamp() {
   showMessage("The nightstand seems antique, probably older than the house itself by many centuries. The drawer handles are all worn from consistent usage. The lamp buzzes loudly and doesn't seem to have been touched in a long time, as if the light had not been turned off.");
+  checkForEncounter();
   updateDisplay();
 }
 
@@ -370,6 +420,7 @@ function searchToolBench() {
   } else {
     showMessage("There are torn pages scattered all over the table, they seem to be hastily torn from their place. It only confuses you even more than you already were.");
   }
+  checkForEncounter();
 }
 
 function inspectWaterHeater() {
@@ -377,8 +428,9 @@ function inspectWaterHeater() {
     showMessage("You find a torn journal page near the water heater, it looks like it was dropped in a hurry. As you unfold it you can see it is Ronald's handwriting, it's the last of his journal entries, most can be read. 'I figured it out...I can't believe it is true. I never believed in these things...but evil exists and I invited it for dinner. The name on the paper...the back of it. I need to get the....from....safe.....room....under....Jack...' At the bottom of the page scrawled hastily is a number. '13'");
   } else {
     showMessage("You find a folded piece of paper, when you unfold it you can see frantic hurried scribbles. You can make out 'I figured it out...I can't believe it is true. I never believed in these things...but evil exists and I invited it for dinner. The name on the paper...the back of it. I need to get the....from....safe.....room....under....Jack...' At the bottom of the page scrawled hastily is a number. '13'");
- }
+  }
   foundCombination2 = true;
+  checkForEncounter();
 }
 
 function examinePlywood() {
@@ -387,6 +439,7 @@ function examinePlywood() {
   } else {
     showMessage("As you peer behind the plywood you find a broken phone, obviously it is Ronald's, and an odd marking carved into the concrete. It's nothing you have seen before. This is where Ronald sent his last message...the drag marks indicate he didn't leave willingly.");
   }
+  checkForEncounter();
   updateDisplay();
 }
 
@@ -512,4 +565,39 @@ function updateButtons() {
     document.getElementById("status").innerText = "Examine Water Heater";
     document.getElementById("leave").innerText = "Examine Plywood";
     document.getElementById("extra").innerText = "Back to Lobby";
-    document.getElementById("e
+    document.getElementById("extra").style.display = "block";
+  } else {
+    document.getElementById("investigate").innerText = "...";
+    document.getElementById("status").innerText = "...";
+    document.getElementById("leave").innerText = "Try Again";
+    document.getElementById("leave").onclick = resetGame;
+    document.getElementById("extra").style.display = "none";
+  }
+}
+
+// ==================
+// RESET
+// ==================
+function resetGame() {
+  playerHealth = 100;
+  sanity = 100;
+  fear = 0;
+  fearLevel = 0;
+  isGameOver = false;
+  ghostSighted = false;
+  location = "outside";
+  doorLocked = true;
+  inventory = [];
+  gameState = "outside";
+  visitedOffice = false;
+  visitedBedroom = false;
+  visitedBasement = false;
+  foundCombination1 = false;
+  foundCombination2 = false;
+  foundJournalPages = false;
+  foundNote = false;
+  safeUnlocked = false;
+  jackEncounterChance = 0.1;
+  updateDisplay();
+  updateButtons();
+}
