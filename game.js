@@ -1,5 +1,4 @@
 window.onload = function() { document.getElementById("investigate").innerText = "JS Loaded"; };
-console.log("game.js loaded");
 // ==================
 // GAME STATE
 // ==================
