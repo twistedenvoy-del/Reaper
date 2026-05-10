@@ -1,3 +1,4 @@
+console.log("game.js loaded");
 // ==================
 // GAME STATE
 // ==================
