@@ -374,10 +374,10 @@ function searchToolBench() {
 
 function inspectWaterHeater() {
   if (visitedBedroom === true) {
-    showMessage("You find a torn journal page near the water heater, it looks like it was dropped in a hurry. As you unfold it you can see it is Ronald's handwriting, it's the last of his journal. 'I figured it out...I can't believe it is true. I never believed in these things...but evil exists and I invited it for dinner. The name on the paper...the back of it. Jack...' At the bottom of the page scrawled hastily is a number. '13'");
+    showMessage("You find a torn journal page near the water heater, it looks like it was dropped in a hurry. As you unfold it you can see it is Ronald's handwriting, it's the last of his journal entries, most can be read. 'I figured it out...I can't believe it is true. I never believed in these things...but evil exists and I invited it for dinner. The name on the paper...the back of it. I need to get the....from....safe.....room....under....Jack...' At the bottom of the page scrawled hastily is a number. '13'");
   } else {
-    showMessage("You find a folded piece of paper, when you unfold it you can see frantic hurried scribbles. You can make out 'I figured it out...I can't believe it is true. I never believed in these things...but evil exists and I invited it for dinner. The name on the paper...the back of it. Jack...' At the bottom of the page scrawled hastily is a number. '13'");
-  }
+    showMessage("You find a folded piece of paper, when you unfold it you can see frantic hurried scribbles. You can make out 'I figured it out...I can't believe it is true. I never believed in these things...but evil exists and I invited it for dinner. The name on the paper...the back of it. I need to get the....from....safe.....room....under....Jack...' At the bottom of the page scrawled hastily is a number. '13'");
+ }
   foundCombination2 = true;
 }
 
