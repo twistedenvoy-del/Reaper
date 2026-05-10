@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>The Reaper</title>
+  <link rel="stylesheet" href="game.css">
+</head>
+<body>
+  <div class="game-container">
+    <div class="status-bar">
+      <span id="health-display">Health: 100</span>
+      <span id="sanity-display">Sanity: 100</span>
+      <span id="fear-display">Fear: 0</span>
+    </div>
+    <div class="game-text">
+      <p>You stand amongst the darkness, an eerie building looming before you. What do you do?</p>
+    </div>
+    <div class="action-buttons">
+      <button type="button" onclick="handleInvestigate()" id="investigate">Investigate</button>
+      <button type="button" onclick="handleStatus()" id="status">Check Status</button>
+      <button type="button" onclick="handleLeave()" id= "leave>Leave</button>
+       <button type = "button" id = "extra"  style:"display:none" onclick = "handleExtra ()>...</button>
+    </div>
+  </div>
+  <script src="game.js"></script>
+</body>
+    </html>
