@@ -1,4 +1,3 @@
-window.onload = function() { document.getElementById("investigate").innerText = "JS Loaded"; };
 // ==================
 // GAME STATE
 // ==================
