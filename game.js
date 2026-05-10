@@ -601,3 +601,4 @@ function resetGame() {
   updateDisplay();
   updateButtons();
 }
+document.getElementById("investigate").onclick = handleInvestigate;
