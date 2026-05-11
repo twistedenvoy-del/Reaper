@@ -358,8 +358,9 @@ function examineDesk() {
     showMessage("The safe sits open under the desk, its contents already in your possession. The computer screen still flickers with Ronald's desperate research.");
   } else {
     showMessage("When you look at the computer you can see a bunch of pages open. The one on screen speaks of bringing evil home with you. As you go through the other pages you notice they're all relating to supernatural myths and legends. As you look closer at the desk you notice a large safe underneath it. You try to open it but it doesn't budge, it takes a passcode. Most people have them memorized, but they also have them wrote down somewhere. Maybe there's something in there that can help locate Ronald and James. You should keep an eye out for the combination.");
-    attemptSafe();
+    
   }
+  attemptSafe();
   checkForEncounter();
   updateDisplay();
 }
@@ -519,7 +520,7 @@ function handleLeave() {
     examineLamp();
   } else if (gameState === "basement") {
     examinePlywood();
-  } else if (gameStat==="inside") {
+  } else if (gameState==="inside") {
     handleBasement();
   }else {
     let result = escapeBuilding();
