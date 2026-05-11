@@ -502,7 +502,9 @@ function handleStatus() {
     examineBed();
   } else if (gameState === "basement") {
     inspectWaterHeater();
-  } else {
+  }  else if (gameState === "inside") {
+    handleBedroom();
+    } else {
     let result = getGameStats();
     showMessage("Health: " + result.health + "\nSanity: " + result.sanity + "\nFear: " + result.fear + "\nStatus: " + result.status);
     updateDisplay();
@@ -517,7 +519,9 @@ function handleLeave() {
     examineLamp();
   } else if (gameState === "basement") {
     examinePlywood();
-  } else {
+  } else if (gameStat==="inside") {
+    handleBasement();
+  }else {
     let result = escapeBuilding();
     showMessage(result);
     updateDisplay();
