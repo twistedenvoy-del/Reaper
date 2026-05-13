@@ -1,7 +1,7 @@
 body {
   background-color: black;
   margin: 0;
-  font-family: arial;
+  font-family: 'Cinzel', serif;
 }
 
 .game-container {
@@ -30,13 +30,15 @@ body {
   min-height: 200px;
   color: #cccccc;
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.8;
+  text-align: center;
 }
 
 .action-buttons {
   display: flex;
   gap: 10px;
   padding: 10px;
+  justify-content: center;
 }
 
 button {
