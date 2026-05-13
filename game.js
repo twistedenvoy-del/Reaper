@@ -702,9 +702,9 @@ function attemptSafe() {
 // DISPLAY FUNCTIONS
 // ==================
 function updateDisplay() {
-  document.getElementById("health-display").innerText = playerHealth;
-  document.getElementById("sanity-display").innerText = sanity;
-  document.getElementById("fear-display").innerText = fearLevel;
+  document.getElementById("health-display").innerText = "Health: " + playerHealth;
+  document.getElementById("sanity-display").innerText = "Sanity: " + sanity;
+  document.getElementById("fear-display").innerText = "Fear: " + fearLevel;
 }
 
 function showMessage(message) {
