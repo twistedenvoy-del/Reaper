@@ -503,12 +503,13 @@ function handleOffice() {
   visitedOffice = true;
   gameState = "office";
   showMessage("As you open the door, you see an office in disarray. Papers are scattered everywhere around the office, the computer monitor flickers in the darkness. Its light shining on the bay window over looking the lake. It definitely looks like someone was frantic to find something...");
+  updateDisplay();
   updateButtons();
 }
 
 function handleBedroom() {
   if (finalStand === true){
-    showMessage("You fled to the bedroom, hoping the religious items would protect you from him. But by the shaking of the door you knew it wouldn't hold him out any longer. You hide under the bed, like a child hiding under the covers. The door rattles more and more as you see a note on the leg of the bed. You take it and read it...it's Ronald's plan to fight him. 'With the amulet in your hand burn the patient list. It will weaken him enough that with the amulet and Jack the Reapers real name he can be banished...his name...is Jack Styx...' With this information you crawl from the bed just as the door explodes open. You grab the lighter from the dresser by the bed and light the patient list on fire. Jack screams No as the paper begins to burn. With all your might you hurl the amulet at Jack. Jack Styx I banish you to whatever hell you came from. The amulet hits his physical form in the chest and with a cry he evaporated in front of you. And with his disappearance the attic door fell open as if nothing was holding it shut any longer. In the attic was James and Ronald...alive...barely.");
+    showMessage("You fled to the bedroom, hoping the religious items would protect you from him. But by the shaking of the door you knew it wouldn't hold him out any longer. You hide under the bed, like a child hiding under the covers. The door rattles more and more as you see a note on the leg of the bed. You take it and read it...it's Ronald's plan to fight him. 'With the amulet in your hand burn the patient list. It will weaken him enough that with the amulet and Jack the Reapers real name he can be banished...his name...is Jack Styx...' With this information you crawl from the bed just as the door explodes open. You grab the lighter from the dresser by the bed and light the patient list on fire. Jack screams 'Nooooo' as the paper begins to burn. With all your might you hurl the amulet at Jack. 'Jack Styx I banish you to whatever hell you came from.' The amulet hits his physical form in the chest and with a cry he evaporated in front of you. And with his disappearance the attic door fell open as if nothing was holding it shut any longer. In the attic was James and Ronald...alive...barely.");
     isGameOver = true;
 gameState = "gameover";
     updateButtons();
@@ -518,6 +519,7 @@ gameState = "gameover";
   visitedBedroom = true;
   gameState = "bedroom";
   showMessage("As you open the door you can see this is Ronald's bedroom, if it weren't for the situation you'd leave immediately to not invade this sanctity. The room is massive, you think it's larger than your entire front room and kitchen combined. The massive California king is situated in the back of the room the covers tossed aside. The blinds in the entire room are shut. You see a cross above the bed, a Buddha on the nightstand. The lamp is on and the nightstand has many drawers. Across the room there is a TV mounted on the wall next to the master bathroom. This room doesn't seem to be as big of a disaster as the office, but you still get an odd feeling.");
+  updateDisplay ();
   updateButtons();
 }
 
@@ -563,7 +565,7 @@ function examineDesk() {
     showMessage("The safe sits open under the desk, its contents already in your possession. The computer screen still flickers with Ronald's desperate research.");
   } else {
     showMessage("When you look at the computer you can see a bunch of pages open. The one on screen speaks of bringing evil home with you. As you go through the other pages you notice they're all relating to supernatural myths and legends. As you look closer at the desk you notice a large safe underneath it. You try to open it but it doesn't budge, it takes a passcode. Most people have them memorized, but they also have them wrote down somewhere. Maybe there's something in there that can help locate Ronald and James. You should keep an eye out for the combination.");
-    
+   updateDisplay ();
   }
   if (foundCombination1 === true || foundCombination2 ===true){
   attemptSafe();
@@ -614,7 +616,7 @@ function examineBed() {
     }
     foundNote = true;
   } else {
-    showMessage("The bed is massive, it could fit four well built adults with room to spare. On the floor there is a scuff mark. You look closely at the scuff mark. The bed had been moved forcefully.");
+    showMessage("The bed is massive, it could fit four adults with room to spare. On the floor there is a scuff mark. You look closely at the scuff mark. The bed had been moved forcefully.");
     checkForEncounter();
   }
   updateDisplay();
