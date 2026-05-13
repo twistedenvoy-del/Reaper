@@ -10,7 +10,7 @@ let ghostSighted = false;
 let area = "outside";
 let doorLocked = true;
 let inventory = [];
-let gameState = "intro";
+let gameState = "title";
 let visitedOffice = false;
 let visitedBedroom = false;
 let visitedBasement = false;
@@ -27,6 +27,7 @@ let shownSanity50 = false;
 let shownSanity25 = false;
 let faceJack = false;
 let finalStand = false;
+let visitedBayWindow = false;
 // ==================
 // FEAR SYSTEM
 // ==================
@@ -43,6 +44,9 @@ function increaseFear() {
 function loseSanity() {
   if (sanity > 0) {
     sanity -= 15;
+  }
+  if (sanity < 0) {
+    sanity = 0;
   }
   if (sanity <= 0) {
     isGameOver = true;
@@ -83,6 +87,9 @@ function checkSanity() {
 // ==================
 function takeDamage(damage) {
   playerHealth -= damage;
+  if (playerHealth < 0){
+    playerHealth = 0;
+  }
   if (playerHealth <= 0) {
     isGameOver = true;
     gameState = "gameover";
@@ -274,7 +281,7 @@ function describeLocation(place) {
   if (place === "outside") {
     return "The night sky casts a creeping shadow over the building. It has an odd feeling about it though it appears normal, there is something not quite right.";
   } else if (place === "inside") {
-    return "The feeling of wrongness seems to permeate the inside of the halls. Every step echoes loudly, as if the house itself had a heart beat.";
+    return "The feeling of wrongness seems to permeate the inside of the halls. Every step echoes loudly, as if the house itself had a heart beat. You can see James's phone laying on the floor in the middle of the lobby.";
   } else if (place === "basement") {
     return "The room is pitch black, the air is stale and hard to breathe. But you're not the only thing breathing down here.";
   } else {
@@ -429,7 +436,10 @@ function fullGameLoop() {
 // ==================
 // INTRO AND OUTSIDE
 // ==================
-
+function handleTitle() {
+  gameState = "intro";
+  showMessage("You look down at your phone, the screen showing the last message you received from your best friend. 'Yo, I need your help. My cousin is missing meet me at his place. I sent you a pin come quickly.' Damn it James. Why do you always do this, telling me nothing but expecting me to jump. Im going to beat you when I see you. You look up at this house on a lake, it gives you chills it seems like something out of a horror movie. This is probably one of his pranks again...I need to keep it together. I'm not going to let him weigh on my sanity and he won't get to see my fear.");
+}
 function handleIntro() {
   gameState = "outside";
   showMessage ("The night sky casts a creeping shadow over the building. It has an odd feeling about it though it appears normal, there is something not quite right.");
@@ -449,8 +459,14 @@ function handleCallJames() {
 
 function handleLake() {
   showMessage("Still thinking about the unanswered call, you look out over the lake. It is calm and still, but something feels off about it. It feels as though the lake itself watches you.");
+  updateButtons();
+  updateDisplay();
 }
 
+function showTitle() {
+  showMessage("The Reaper\n\nSometimes you're not alone\n\n A game designed by Bill Miller");
+  updateButtons();
+}
 function showIntro() {
   showMessage("You look down at your phone, the screen showing the last message you received from your best friend. 'Yo, I need your help. My cousin is missing meet me at his place. I sent you a pin come quickly.' Damn it James. Why do you always do this, telling me nothing but expecting me to jump. Im going to beat you when I see you. You look up at this house on a lake, it gives you chills it seems like something out of a horror movie. This is probably one of his pranks again...I need to keep it together. I'm not going to let him weigh on my sanity and he won't get to see my fear.");
   updateButtons();
@@ -475,8 +491,15 @@ function endIt () {
   updateDisplay();
 }
 
-
 function handleOffice() {
+  if (finalStand === true) {
+    showMessage("As you run back into the office you looked for anything that could help you. The papers scattered around the office all with the symbol on the amulet made you think it had something to do with defeating Jack. You hide next to the door waiting, after what seems like an eternity, Jack enters the room. He's grown so powerful he has physical form again. As he looks toward the desk you jump out from behind him throwing the necklace over his head. He wails in pain, do ghosts feel pain you wondered, but his screams told you they do. He disappeared as you heard the front door unlock. Jack was gone for now but he'd be back...and still no sign of James or Ronald. You search for hours but finally give up and leave.");
+    isGameOver = true;
+    gameState = "gameover";
+    updateButtons();
+    updateDisplay();
+    return;
+  }
   visitedOffice = true;
   gameState = "office";
   showMessage("As you open the door, you see an office in disarray. Papers are scattered everywhere around the office, the computer monitor flickers in the darkness. Its light shining on the bay window over looking the lake. It definitely looks like someone was frantic to find something...");
@@ -484,6 +507,14 @@ function handleOffice() {
 }
 
 function handleBedroom() {
+  if (finalStand === true){
+    showMessage("You fled to the bedroom, hoping the religious items would protect you from him. But by the shaking of the door you knew it wouldn't hold him out any longer. You hide under the bed, like a child hiding under the covers. The door rattles more and more as you see a note on the leg of the bed. You take it and read it...it's Ronald's plan to fight him. 'With the amulet in your hand burn the patient list. It will weaken him enough that with the amulet and Jack the Reapers real name he can be banished...his name...is Jack Styx...' With this information you crawl from the bed just as the door explodes open. You grab the lighter from the dresser by the bed and light the patient list on fire. Jack screams No as the paper begins to burn. With all your might you hurl the amulet at Jack. Jack Styx I banish you to whatever hell you came from. The amulet hits his physical form in the chest and with a cry he evaporated in front of you. And with his disappearance the attic door fell open as if nothing was holding it shut any longer. In the attic was James and Ronald...alive...barely.");
+    isGameOver = true;
+gameState = "gameover";
+    updateButtons();
+    updateDisplay();
+    return;
+  }
   visitedBedroom = true;
   gameState = "bedroom";
   showMessage("As you open the door you can see this is Ronald's bedroom, if it weren't for the situation you'd leave immediately to not invade this sanctity. The room is massive, you think it's larger than your entire front room and kitchen combined. The massive California king is situated in the back of the room the covers tossed aside. The blinds in the entire room are shut. You see a cross above the bed, a Buddha on the nightstand. The lamp is on and the nightstand has many drawers. Across the room there is a TV mounted on the wall next to the master bathroom. This room doesn't seem to be as big of a disaster as the office, but you still get an odd feeling.");
@@ -491,6 +522,14 @@ function handleBedroom() {
 }
 
 function handleBasement() {
+  if (finalStand === true) {
+    showMessage("You run to the basement, the footsteps of who you assume is Jack, behind you. You reach the basement quickly looking for any way to fight. But there's nothing there it's a coffin like box. As you hear Jack descending the stairs you glance over seeing a cellar door. You push on it but it's locked, suddenly you remember the worn key. Fumbling with the lock you finally manage to unlock the door and scrambled outside to your car speeding away. All you could do is repeat to yourself 'I am sorry...I am sorry....James forgive me.'");
+    isGameOver = true;
+    gameState = "gameover";
+    updateButtons ();
+    updateDisplay();
+    return;
+  }
  if (visitedBasement === false) {
    sanity -= 20;
   fearLevel += 20;
@@ -535,14 +574,21 @@ function examineDesk() {
 
 function examineBayWindow() {
   jackEncounterChance += 0.03;
+  if (visitedBayWindow === false){
   sanity -= 10;
   fearLevel += 10;
+}
   showMessage("As you walk over to the bay window you can see an oil spot, as if someone placed their forehead against the pane of glass in defeat. Outside the window you can see the lake, what is beautiful in the day, holds an eerie stillness in the pale moonlight. As you peer out the window something dark flashes in the corner of your vision. Causing you to jump slightly. But then there was nothing...maybe it was your imagination.");
+  visitedBayWindow = true;
   checkForEncounter();
   updateDisplay();
 }
 
 function backToLobby() {
+  if (faceJack === true){
+    endIt();
+    return;
+  }
   gameState = "inside";
   showMessage("As you leave the office, the lobby feels even more weighted. The sense of dread is growing and the feeling something is watching tickles at the back of your mind.");
   updateButtons();
@@ -643,7 +689,6 @@ function attemptSafe() {
      pickUpItem("Mysterious Amulet");
    }
     safeUnlocked = true;
-  }else if (safeUnlocked === true) {
     faceJack = true;
   }
   else {
@@ -665,7 +710,10 @@ function showMessage(message) {
 }
 
 function handleInvestigate() {
-  if (gameState === "intro") {
+  if (gameState === "title") {
+    handleTitle();
+  }
+  else if (gameState === "intro") {
     handleIntro();
   }
   else if (gameState === "outside") {
@@ -686,9 +734,12 @@ function handleInvestigate() {
   } else if (gameState === "basement") {
     searchToolBench();
   }
-  else if (gameState === "end") {
-    handelEndIt ()
-}
+  else if (gameState === "end"){
+    handleOffice();
+  }
+  else if (gameState === "Title") {
+    handleTitle();
+  }
 }
 function handleStatus() {
   if (gameState === "office") {
@@ -709,8 +760,18 @@ function handleStatus() {
       updateButtons()
     }
     else if (gameState === "end") {
-  handelEndIt()
-}
+      if (foundNote === true){
+        isGameOver = true;
+        gameState = "gameover";
+        showMessage("You are not surprised to see the man materializing in front of you. The patient list gripped tightly in your hands your anger growing. 'Where are my friends?' you scream as you begin to walk towards him. The patient list now in each hand as you begin to tear the page apart. Jack began to scream, enraged and weakened at the same time. Jack rushes you and slams you to the ground, you pull the amulet out without fear and place it to his forehead. 'Go to hell...Jack...Styx.' And with a bright light the magic of the amulet was unleashed and Jack disappeared. The house was quiet for a while, but you heard a thud from the bedroom. You went to inspect and found James and Ronald stumbling down from the attic in the bedroom... \n\nIt had been three weeks now, James and Ronald finally recovered for the most part. No one has spoke of the incident though you all knew the fact your lives had changed forever. You are watching a horror movie when your phone buzzed. A text from James 'Hey brother...I need your help...' You reply 'Damnit James what did you do this time...?' You tense up slightly. 'Nah man, I need your help...do I bring nacho chips or BBQ over for game night?' You smile at your phone and shake your head 'BBQ all the way my guy...");
+        updateButtons();
+        updateDisplay();
+        return;
+      }
+      else {
+      handleBedroom ();
+    }
+    }
       else {
     let result = getGameStats();
     showMessage("Health: " + result.health + "\nSanity: " + result.sanity + "\nFear: " + result.fear + "\nStatus: " + result.status);
@@ -737,7 +798,7 @@ function handleLeave() {
       }
     }
     else if (gameState === "end") {
-    handelEndIt ()
+    handleBasement ()
 }
   else {
     let result = escapeBuilding();
@@ -821,6 +882,24 @@ function updateButtons() {
     document.getElementById("leave").style.display = "none";
     document.getElementById("extra").style.display = "none";
   }
+  else if (gameState === "end"){
+    document.getElementById("investigate").innerText = "Retreat to office";
+    if (foundNote === true) {
+      document.getElementById("status").innerText = "Face your fears";
+    }
+      else {
+        document.getElementById("status").innerText = "Run To bedroom";
+      }
+      document.getElementById("leave").innerText = "Flee to basement";
+      document.getElementById("extra").style.display ="none";
+    
+  }
+  else if (gameState === "title") {
+    document.getElementById("investigate"). innerText = "Answer The Call";
+    document.getElementById("status").style.display = "none";
+    document.getElementById("leave").style.display = "none";
+    document.getElementById("extra").style.display = "none";
+  }
   else if (gameState === "gameover") {
     document.getElementById("investigate").innerText = "...";
     document.getElementById("status").innerText = "..."
@@ -844,7 +923,7 @@ function resetGame() {
   area = "outside";
   doorLocked = true;
   inventory = [];
-  gameState = "intro";
+  gameState = "title";
   visitedOffice = false;
   visitedBedroom = false;
   visitedBasement = false;
@@ -858,10 +937,11 @@ function resetGame() {
   phoneExamined = false;
   faceJack = false;
   finalStand = false;
+  visitedBayWindow = false;
   document.getElementById("leave").onclick = handleLeave;
   updateDisplay();
   updateButtons();
-  showIntro();
+  showTitle();
 }
 
-showIntro();
+showTitle();
