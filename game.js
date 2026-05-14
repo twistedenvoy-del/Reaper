@@ -728,10 +728,10 @@ function examinePlywood() {
     showMessage("You look behind the plywood in the corner. Behind it there is a broken phone, scratches on the ground from something being dragged as if fighting, and the same symbol carved into the concrete as you saw in the office. This must be the place that Ronald sent the last message to James...maybe his last message ever...");
   } else {
     showMessage("As you peer behind the plywood you find a broken phone, obviously it is Ronald's, and an odd marking carved into the concrete. It's nothing you have seen before. This is where Ronald sent his last message...the drag marks indicate he didn't leave willingly.");
-    setTimeout(function(){
-      triggerTextscare();
+    }
+  setTimeout(function(){
+      triggerTextScare();
     }, 1500)
-  }
   checkForEncounter();
   updateDisplay();
   updateButtons();
