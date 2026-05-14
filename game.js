@@ -162,7 +162,7 @@ function triggerJumpscare(){
     document.getElementById("jumpscare").style.display = "none";}, 200);
   }
   
-  function triggerTextscare(){
+  function triggerTextScare(){
   document.getElementById("text-scare").style.display = "flex";
   setTimeout(function() {
     document.getElementById("text-scare").style.display = "none";}, 500);
