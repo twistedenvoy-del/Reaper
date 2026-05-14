@@ -4,6 +4,47 @@ body {
   padding: 0;
   font-family: 'Cinzel', serif;
 }
+#text-scare {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: darkred;
+  z-index: 999;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  font-size: 200px;
+}
+#jumpscare {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+#shadow-figure {
+  width:40px;
+  height: 150px;
+  background: #1a0000;
+  border-radius: 30% 30% 0 0;
+  animation: dartAcross 0.2s ease-in-out;
+}
+
+@keyframes dartAcross{
+  0%{transform: translateX(-200px); opacity: 0;}
+  20%{opacity: 1;}
+  80%{opacity: 1;}
+  100%{transform: translateX(200px);opacity: 0;}
+}
 
 .game-container {
   display: flex;
