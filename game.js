@@ -35,7 +35,7 @@ let dresserExamined = false;
 let bedExamined = false;
 let lampExamined = false;
 let toolBenchExamined = false;
-let waterHesterExamined = false;
+let waterHeaterExamined = false;
 let plywoodExamined = false;
 let encounterCooldown = false;
 // ==================
