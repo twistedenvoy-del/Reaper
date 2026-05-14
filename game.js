@@ -28,6 +28,15 @@ let shownSanity25 = false;
 let faceJack = false;
 let finalStand = false;
 let visitedBayWindow = false;
+let papersExamine = false;
+let deskExamined = false;
+let bayWindowExamined = false;
+let dresserExamined = false;
+let bedExamined = false;
+let lampExamined = false;
+let toolBenchExamined = false;
+let waterHesterExamined = false;
+let plywoodExamined = false;
 // ==================
 // FEAR SYSTEM
 // ==================
@@ -554,13 +563,16 @@ function examinePhone() {
 // ==================
 function examineOffice() {
   jackEncounterChance += 0.03;
+  papersExamine = true;
   showMessage("When you look closer at the papers on the floor, there are frantic writings, few words can be made out, 'hunts' is one of the recurring ones you could read. They also have this odd symbol you don't recognize at all.");
   checkForEncounter();
   updateDisplay();
+  updateButtons();
 }
 
 function examineDesk() {
   jackEncounterChance += 0.03;
+  deskExamined = true;
   if (safeUnlocked === true) {
     showMessage("The safe sits open under the desk, its contents already in your possession. The computer screen still flickers with Ronald's desperate research.");
   } else {
@@ -572,10 +584,12 @@ function examineDesk() {
   }
   checkForEncounter();
   updateDisplay();
+  updateButtons();
 }
 
 function examineBayWindow() {
   jackEncounterChance += 0.03;
+  bayWindowExamined = true;
   if (visitedBayWindow === false){
   sanity -= 10;
   fearLevel += 10;
@@ -584,6 +598,7 @@ function examineBayWindow() {
   visitedBayWindow = true;
   checkForEncounter();
   updateDisplay();
+  updateButtons();
 }
 
 function backToLobby() {
@@ -601,14 +616,17 @@ function backToLobby() {
 // ==================
 function searchDresser() {
   jackEncounterChance += 0.03;
+  dresserExamined = true;
   showMessage("Inside the top drawer you find multiple religious books. From all different walks of life, curious as to why he has so many and of different faiths. The second drawer holds a journal and a lighter, but the pages are all torn out of it in a frantic fashion. One piece of paper catches your eye, it has a number still attached to the journal. '31'");
   foundCombination1 = true;
   checkForEncounter();
   updateDisplay();
+  updateButtons();
 }
 
 function examineBed() {
   jackEncounterChance += 0.03;
+  bedExamined = true;
   if (foundCombination1 === true && foundCombination2 === true) {
     showMessage("You put it together, the journal even tattered you figured out that the bed wasn't moved because someone was drug away but because some one was hiding something. You examine the scuff marks closely and notice something wrapped something attached to the back of the leg of the bed. You reach out and grab it, it's a piece of paper, a plan to fight the entity.");
     if (foundNote === false) {
@@ -620,16 +638,23 @@ function examineBed() {
     checkForEncounter();
   }
   updateDisplay();
+  updateButtons();
 }
 
 function examineLamp() {
   jackEncounterChance += 0.03;
+  lampExamined = true;
   showMessage("The nightstand seems antique, probably older than the house itself by many centuries. The drawer handles are all worn from consistent usage. The lamp buzzes loudly and doesn't seem to have been touched in a long time, as if the light had not been turned off.");
   checkForEncounter();
   updateDisplay();
+  updateButtons();
 }
 
 function bedroomBackToLobby() {
+if (foundCombination1 === true || foundCombination2 ===true){
+  deskExamined = false;
+  bedExamined = false;
+}
   gameState = "inside";
   showMessage("As you leave the personal space of Ronald. You should feel relief, but you feel the complete opposite. The sense of dread grows more as you re-enter the lobby.");
   updateDisplay();
@@ -641,6 +666,7 @@ function bedroomBackToLobby() {
 // ==================
 function searchToolBench() {
   jackEncounterChance += 0.03;
+  toolBenchExamined = true;
   if (visitedBedroom === true) {
     showMessage("You look around the tool bench, the pages scattered among them are the missing pages from Ronald's journal. As you gather them up you notice one page is still missing.");
     foundJournalPages = true;
@@ -648,10 +674,13 @@ function searchToolBench() {
     showMessage("There are torn pages scattered all over the table, they seem to be hastily torn from their place. It only confuses you even more than you already were.");
   }
   checkForEncounter();
+  updateDisplay();
+  updateButtons();
 }
 
 function inspectWaterHeater() {
   jackEncounterChance += 0.03;
+  waterHeaterExamined = true;
   if (visitedBedroom === true) {
     showMessage("You find a torn journal page near the water heater, it looks like it was dropped in a hurry. As you unfold it you can see it is Ronald's handwriting, it's the last of his journal entries, most can be read. 'I figured it out...I can't believe it is true. I never believed in these things...but evil exists and I invited it for dinner. The name on the paper...the back of it. I need to get the....from....safe.....plan...bed....Jack...' At the bottom of the page scrawled hastily is a number. '13'");
   } else {
@@ -659,10 +688,13 @@ function inspectWaterHeater() {
   }
   foundCombination2 = true;
   checkForEncounter();
+  updateDisplay();
+  updateButtons();
 }
 
 function examinePlywood() {
   jackEncounterChance += 0.03;
+  plywoodExamined = true;
   if (visitedOffice === true) {
     showMessage("You look behind the plywood in the corner. Behind it there is a broken phone, scratches on the ground from something being dragged as if fighting, and the same symbol carved into the concrete as you saw in the office. This must be the place that Ronald sent the last message to James...maybe his last message ever...");
   } else {
@@ -670,9 +702,14 @@ function examinePlywood() {
   }
   checkForEncounter();
   updateDisplay();
+  updateButtons();
 }
 
 function basementBackToLobby() {
+  if (foundCombination1 === true || foundCombination2 ===true){
+  deskExamined = false;
+  bedExamined = false;
+}
   gameState = "inside";
   showMessage("You return to the main hall in a hurry. The basement made you feel uneasy, every sound down there felt unnatural. The steps creaking when no one was on the stairs, the dripping water breaking any silence you had. The ring of your lifelong friend in your pocket...the burden weighs on your mind.");
   updateDisplay();
@@ -765,7 +802,7 @@ function handleStatus() {
       if (foundNote === true){
         isGameOver = true;
         gameState = "gameover";
-        showMessage("You are not surprised to see the man materializing in front of you. The patient list gripped tightly in your hands your anger growing. 'Where are my friends?' you scream as you begin to walk towards him. The patient list now in each hand as you begin to tear the page apart. Jack began to scream, enraged and weakened at the same time. Jack rushes you and slams you to the ground, you pull the amulet out without fear and place it to his forehead. 'Go to hell...Jack...Styx.' And with a bright light the magic of the amulet was unleashed and Jack disappeared. The house was quiet for a while, but you heard a thud from the bedroom. You went to inspect and found James and Ronald stumbling down from the attic in the bedroom... \n\nIt had been three weeks now, James and Ronald finally recovered for the most part. No one has spoke of the incident though you all knew the fact your lives had changed forever. You are watching a horror movie when your phone buzzed. A text from James 'Hey brother...I need your help...' You reply 'Damnit James what did you do this time...?' You tense up slightly. 'Nah man, I need your help...do I bring nacho chips or BBQ over for game night?' You smile at your phone and shake your head 'BBQ all the way my guy...");
+        showMessage("You are not surprised to see the man materializing in front of you. The patient list gripped tightly in your hands your anger growing. 'Where are my friends?' you scream as you begin to walk towards him. The patient list now in each hand as you begin to tear the page apart. Jack began to scream, enraged and weakened at the same time. Jack rushes you and slams you to the ground, you pull the amulet out without fear and place it to his forehead. 'Go to hell...Jack...Styx.' And with a bright light the magic of the amulet was unleashed and Jack disappeared. The house was quiet for a while, but you heard a thud from the bedroom. You went to inspect and found James and Ronald stumbling down from the attic in the bedroom... \n\nIt had been three weeks now, James and Ronald finally recovered for the most part. No one has spoke of the incident though you all knew the fact your lives had changed forever. You are watching a horror movie when your phone buzzed. A text from James 'Hey brother...I need your help...' You reply 'Damnit James what did you do this time...?' You tense up slightly. 'Nah man, I need your help...do I bring nacho chips or BBQ over for game night?' You smile at your phone and shake your head 'I absolutely HATE YOU...lol but BBQ all the way my guy...");
         updateButtons();
         updateDisplay();
         return;
@@ -851,6 +888,10 @@ function updateButtons() {
     document.getElementById("status").innerText = "Bedroom";
     document.getElementById("leave").innerText = "Basement";
     document.getElementById("leave").style.display = "block";
+    document.getElementById("investigate").style.backgroundColor = "#8b0000";
+    document.getElementById("status").style.backgroundColor = "#8b0000";
+    document.getElementById("leave").style.backgroundColor = "#8b0000";
+    document.getElementById("extra").style.backgroundColor = "#8b0000";
      if (phoneExamined === true){
        document.getElementById("extra").innerText = "Check Inventory"
        document.getElementById("extra").style.display ="block";
@@ -858,25 +899,80 @@ function updateButtons() {
      else {
     document.getElementById("extra"). innerText = "Examine Phone";
     document.getElementById("extra").style.display = "block";
+    
      }
   } else if (gameState === "office") {
-    document.getElementById("investigate").innerText = "Examine Papers";
-    document.getElementById("status").innerText = "Check Desk";
-    document.getElementById("leave").innerText = "Bay Window";
-    document.getElementById("extra").innerText = "Back to Lobby";
-    document.getElementById("extra").style.display = "block";
-  } else if (gameState === "bedroom") {
+  document.getElementById("investigate").innerText = "Examine Papers";
+  if (papersExamine === true) {
+    document.getElementById("investigate").style.backgroundColor = "#555555";
+  }
+  else {
+    document.getElementById("investigate").style.backgroundColor = "#8b0000";
+  }
+  if (deskExamined === true) {
+    document.getElementById("status").style.backgroundColor = "#555555";
+  }
+  else {
+    document.getElementById("status").style.backgroundColor = "#8b0000";
+  }
+  if (bayWindowExamined === true) {
+  document.getElementById("leave").style.backgroundColor = "#555555";
+}
+else {
+  document.getElementById("leave").style.backgroundColor = "#8b0000";
+}
+  document.getElementById("status").innerText = "Check Desk";
+  document.getElementById("leave").innerText = "Bay Window";
+  document.getElementById("extra").innerText = "Back to Lobby";
+  document.getElementById("extra").style.display = "block";
+} else if (gameState === "bedroom") {
     document.getElementById("investigate").innerText = "Dresser Drawers";
     document.getElementById("status").innerText = "Examine Bed";
     document.getElementById("leave").innerText = "Examine Lamp";
     document.getElementById("extra").innerText = "Back to Lobby";
     document.getElementById("extra").style.display = "block";
+    if (dresserExamined === true) {
+  document.getElementById("investigate").style.backgroundColor = "#555555";
+}
+else {
+  document.getElementById("investigate").style.backgroundColor = "#8b0000";
+}
+if (bedExamined === true) {
+  document.getElementById("status").style.backgroundColor = "#555555";
+}
+else {
+  document.getElementById("status").style.backgroundColor = "#8b0000";
+}
+if (lampExamined === true) {
+  document.getElementById("leave").style.backgroundColor = "#555555";
+}
+else {
+  document.getElementById("leave").style.backgroundColor = "#8b0000";
+}
   } else if (gameState === "basement") {
     document.getElementById("investigate").innerText = "Check Tool Bench";
     document.getElementById("status").innerText = "Examine Water Heater";
     document.getElementById("leave").innerText = "Examine Plywood";
     document.getElementById("extra").innerText = "Back to Lobby";
     document.getElementById("extra").style.display = "block";
+    if (toolBenchExamined === true) {
+  document.getElementById("investigate").style.backgroundColor = "#555555";
+}
+else {
+  document.getElementById("investigate").style.backgroundColor = "#8b0000";
+}
+if (waterHeaterExamined === true) {
+  document.getElementById("status").style.backgroundColor = "#555555";
+}
+else {
+  document.getElementById("status").style.backgroundColor = "#8b0000";
+}
+if (plywoodExamined === true) {
+  document.getElementById("leave").style.backgroundColor = "#555555";
+}
+else {
+  document.getElementById("leave").style.backgroundColor = "#8b0000";
+}
   }
   else if(gameState === "intro") {
     document.getElementById("investigate").innerText = "...";
@@ -894,8 +990,12 @@ function updateButtons() {
       }
       document.getElementById("leave").innerText = "Flee to basement";
       document.getElementById("extra").style.display ="none";
-    
+    document.getElementById("investigate").style.backgroundColor = "#8b0000";
+document.getElementById("status").style.backgroundColor = "#8b0000";
+document.getElementById("leave").style.backgroundColor = "#8b0000";
+document.getElementById("extra").style.backgroundColor = "#8b0000";
   }
+  
   else if (gameState === "title") {
     document.getElementById("investigate"). innerText = "Answer The Call";
     document.getElementById("status").style.display = "none";
@@ -903,8 +1003,8 @@ function updateButtons() {
     document.getElementById("extra").style.display = "none";
   }
   else if (gameState === "gameover") {
-    document.getElementById("investigate").innerText = "...";
-    document.getElementById("status").innerText = "..."
+    document.getElementById("investigate").style.display = "none";
+    document.getElementById("status").style.display = "none"
     document.getElementById("leave").innerText = "Try Again";
     document.getElementById("leave").style.display = "block";
     document.getElementById("leave").onclick = resetGame;
@@ -941,6 +1041,16 @@ function resetGame() {
   finalStand = false;
   visitedBayWindow = false;
   document.getElementById("leave").onclick = handleLeave;
+  document.getElementById("investigate").style.display = "block";
+  papersExamine = false;
+  deskExamined = false;
+  bayWindowExamined = false;
+  dresserExamined = false;
+  bedExamined = false;
+  lampExamined = false;
+  toolBenchExamined = false;
+  waterHesterExamined = false; 
+  plywoodExamined = false;
   updateDisplay();
   updateButtons();
   showTitle();
