@@ -37,6 +37,7 @@ let lampExamined = false;
 let toolBenchExamined = false;
 let waterHesterExamined = false;
 let plywoodExamined = false;
+let encounterCooldown = false;
 // ==================
 // FEAR SYSTEM
 // ==================
@@ -153,6 +154,23 @@ function createGhost(name, threatLevel) {
 }
 
 // ==================
+// Jumpscares
+// ==================
+function triggerJumpscare(){
+  document.getElementById("jumpscare").style.display = "flex";
+  setTimeout(function() {
+    document.getElementById("jumpscare").style.display = "none";}, 200);
+  }
+  
+  function triggerTextscare(){
+  document.getElementById("text-scare").style.display = "flex";
+  setTimeout(function() {
+    document.getElementById("text-scare").style.display = "none";}, 500);
+  }
+  
+
+
+// ==================
 // ENCOUNTER SYSTEM
 // ==================
 function chanceCheck(chance) {
@@ -169,8 +187,15 @@ function updateEncounterChance() {
 }
 
 function checkForEncounter() {
+  if (encounterCooldown === true){
+    return null;
+  }
   let encountered = chanceCheck(jackEncounterChance);
   if (encountered === true){
+    encounterCooldown= true;
+    setTimeout(function() {
+      encounterCooldown = false;
+    }, 3000);
  let tier = getTier();
       let message = getEncounterMessage(tier);
       showMessage(message);
@@ -194,11 +219,12 @@ function checkForEncounter() {
     else if (tier === 1) {
       loseSanity()
     }
-  }
+}
   else {
     return null;
   }
 }
+
 function getTier (){
 if (sanity > 60 && fearLevel <40) {
 return 1
@@ -565,7 +591,7 @@ function examineOffice() {
   jackEncounterChance += 0.03;
   papersExamine = true;
   showMessage("When you look closer at the papers on the floor, there are frantic writings, few words can be made out, 'hunts' is one of the recurring ones you could read. They also have this odd symbol you don't recognize at all.");
-  checkForEncounter();
+ checkForEncounter();
   updateDisplay();
   updateButtons();
 }
@@ -595,6 +621,9 @@ function examineBayWindow() {
   fearLevel += 10;
 }
   showMessage("As you walk over to the bay window you can see an oil spot, as if someone placed their forehead against the pane of glass in defeat. Outside the window you can see the lake, what is beautiful in the day, holds an eerie stillness in the pale moonlight. As you peer out the window something dark flashes in the corner of your vision. Causing you to jump slightly. But then there was nothing...maybe it was your imagination.");
+  setTimeout(function(){
+    triggerJumpscare();
+  }, 1500);
   visitedBayWindow = true;
   checkForEncounter();
   updateDisplay();
@@ -699,6 +728,9 @@ function examinePlywood() {
     showMessage("You look behind the plywood in the corner. Behind it there is a broken phone, scratches on the ground from something being dragged as if fighting, and the same symbol carved into the concrete as you saw in the office. This must be the place that Ronald sent the last message to James...maybe his last message ever...");
   } else {
     showMessage("As you peer behind the plywood you find a broken phone, obviously it is Ronald's, and an odd marking carved into the concrete. It's nothing you have seen before. This is where Ronald sent his last message...the drag marks indicate he didn't leave willingly.");
+    setTimeout(function(){
+      triggerTextscare();
+    }, 1500)
   }
   checkForEncounter();
   updateDisplay();
@@ -802,7 +834,7 @@ function handleStatus() {
       if (foundNote === true){
         isGameOver = true;
         gameState = "gameover";
-        showMessage("You are not surprised to see the man materializing in front of you. The patient list gripped tightly in your hands your anger growing. 'Where are my friends?' you scream as you begin to walk towards him. The patient list now in each hand as you begin to tear the page apart. Jack began to scream, enraged and weakened at the same time. Jack rushes you and slams you to the ground, you pull the amulet out without fear and place it to his forehead. 'Go to hell...Jack...Styx.' And with a bright light the magic of the amulet was unleashed and Jack disappeared. The house was quiet for a while, but you heard a thud from the bedroom. You went to inspect and found James and Ronald stumbling down from the attic in the bedroom... \n\nIt had been three weeks now, James and Ronald finally recovered for the most part. No one has spoke of the incident though you all knew the fact your lives had changed forever. You are watching a horror movie when your phone buzzed. A text from James 'Hey brother...I need your help...' You reply 'Damnit James what did you do this time...?' You tense up slightly. 'Nah man, I need your help...do I bring nacho chips or BBQ over for game night?' You smile at your phone and shake your head 'I absolutely HATE YOU...lol but BBQ all the way my guy...");
+        showMessage("You are not surprised to see the man materializing in front of you. The patient list gripped tightly in your hands your anger growing. 'Where are my friends?' you scream as you begin to walk towards him. The patient list now in each hand as you begin to tear the page apart. Jack began to scream, enraged and weakened at the same time. Jack rushes you and slams you to the ground, you pull the amulet out without fear and place it to his forehead. 'Go to hell...Jack...Styx.' And with a bright light the magic of the amulet was unleashed and Jack disappeared. The house was quiet for a while, but you heard a thud from the bedroom. You went to inspect and found James and Ronald stumbling down from the attic in the bedroom... \n\nIt had been three weeks now, James and Ronald finally recovered for the most part. No one has spoke of the incident though you all knew the fact your lives had changed forever. You are watching a horror movie when your phone buzzed. A text from James 'Hey brother...I need your help...' You reply 'Damnit James what did you do this time...?' You tense up slightly. 'Nah man, I need your help...do I bring nacho chips or BBQ over for game night?' You smile at your phone and shake your head 'BBQ all the way my guy...");
         updateButtons();
         updateDisplay();
         return;
